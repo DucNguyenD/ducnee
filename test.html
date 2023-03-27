@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <textarea id="text-area" placeholder="Nhập văn bản"></textarea>
+    <button id="add-btn">Thêm</button>
+  </div>
+  <ul id="list-container"></ul>
+  <script>
+    // Lấy các thành phần DOM
+const textArea = document.getElementById('text-area');
+const addBtn = document.getElementById('add-btn');
+const listContainer = document.getElementById('list-container');
+
+// Tạo một mảng chứa các mục đã thêm
+let items = [];
+
+// Thêm sự kiện click cho nút thêm
+addBtn.addEventListener('click', () => {
+  // Lấy giá trị của textarea
+  const textValue = textArea.value;
+
+  // Kiểm tra giá trị của textarea
+  if (textValue.trim() !== '') {
+    // Thêm giá trị vào mảng
+    items.push(textValue);
+
+    // Hiển thị danh sách các mục
+    displayList();
+  }
+
+  // Xóa giá trị của textarea
+  textArea.value = '';
+});
+
+// Tạo hàm hiển thị danh sách các mục
+function displayList() {
+  // Xóa danh sách hiện tại
+  listContainer.innerHTML = '';
+
+  // Duyệt qua các mục và thêm chúng vào danh sách
+  items.forEach((item, index) => {
+    const listItem = document.createElement('li');
+    listItem.innerText = item;
+    listItem.setAttribute('data-index', index);
+
+    // Tạo nút sửa
+    const editBtn = document.createElement('button');
+    editBtn.innerText = 'Sửa';
+    editBtn.setAttribute('data-index', index);
+    editBtn.addEventListener('click', editItem);
+
+    // Tạo nút xóa
+    const deleteBtn = document.createElement('button');
+    deleteBtn.innerText = 'Xóa';
+    deleteBtn.setAttribute('data-index', index);
+    deleteBtn.addEventListener('click', deleteItem);
+
+    // Thêm nút sửa và xóa vào mục
+    listItem.appendChild(editBtn);
+    listItem.appendChild(deleteBtn);
+
+    // Thêm mục vào danh sách
+    listContainer.appendChild(listItem);
+  });
+}
+
+// Tạo hàm sửa mục
+function editItem(event) {
+  const index = event.target.getAttribute('data-index');
+  const editedValue = prompt('Nhập giá trị mới', items[index]);
+  if (editedValue !== null) {
+    items[index] = editedValue;
+    displayList();
+  }
+}
+
+// Tạo hàm xóa mục
+function deleteItem(event) {
+  const index = event.target.getAttribute('data-index');
+  items.splice(index, 1);
+  displayList();
+}
+
+
+
+
+
+
+  </script>
+</body>
+</html>
